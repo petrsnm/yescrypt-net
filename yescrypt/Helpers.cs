@@ -16,11 +16,11 @@ namespace Fasterlimit.Yescrypt
             Array.Copy(src, srcIndex, dst, dstIndex, count);
         }
 
-        public static void BlockXor(uint[] dst, uint[] src, int srcIndex, int count)
+        public static void BlockXor(uint[] dst, int dstIndex, uint[] src, int srcIndex, int count)
         {
             for (int i = 0; i < count; i++)
             {
-                dst[i] ^= src[i + srcIndex];
+                dst[i+dstIndex] ^= src[i + srcIndex];
             }
         }
     }

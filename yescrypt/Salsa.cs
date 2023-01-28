@@ -16,12 +16,12 @@ namespace Fasterlimit.Yescrypt
         /**
          * Apply the Salsa20 core to the provided block.
         */
-        public static void Salsa20(uint[] B, uint rounds)
+        public static void Salsa20(uint[] B, int Bindex, uint rounds)
         {
             uint[] x = new uint[16];
 
             /// SIMD unshuffle
-            for (int i = 0; i < 16; i++)
+            for (int i = Bindex; i < 16 + Bindex; i++)
             {
                 x[i * 5 % 16] = B[i];
             }
@@ -56,7 +56,7 @@ namespace Fasterlimit.Yescrypt
             }
 
             // SIMD shuffle 
-            for (int i = 0; i < 16; i++)
+            for (int i = Bindex; i < 16 + Bindex; i++)
             {
                 B[i] += x[i * 5 % 16];
             }
@@ -73,8 +73,8 @@ namespace Fasterlimit.Yescrypt
             for (int i = 0; i < 2 * r; i++)
             {
                 /* 3: X <-- H(X xor B_i) */
-                Helpers.BlockXor(X, B, i * 16, 16);
-                Salsa20(X, 8);
+                Helpers.BlockXor(X, 0, B, i * 16, 16);
+                Salsa20(X, 0, 8);
 
                 /* 4: Y_i <-- X */
                 Helpers.BlockCopy(Y, i * 16, X, 0, 16);
