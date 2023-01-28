@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace tests
 {
     [TestClass]
-    public class YescryptSalsaTest
+    public class SalsaTest
     {
         [TestMethod]
         public void BlockmixSalsa8Test()
@@ -22,7 +22,7 @@ namespace tests
                 Y[i] = 0;
             }
 
-            YescryptSalsa.BlockmixSalsa8(B, Y, r);
+            Salsa.BlockmixSalsa8(B, Y, r);
 
             uint[] expected = new uint[] {
                 0xdb987384,

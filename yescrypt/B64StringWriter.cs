@@ -11,7 +11,7 @@ namespace Fasterlimit.Yescrypt
         public Yescrypt64StringWriterException(string message) : base(message) { }
     }
 
-     internal class Yescrypt64StringWriter
+     internal class B64StringWriter
     {
         private readonly char[] itoa64 = { '.', '/', '0', '1', '2', '3', 
             '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
@@ -22,12 +22,12 @@ namespace Fasterlimit.Yescrypt
 
         private StringBuilder encodedValue;
 
-        public Yescrypt64StringWriter()
+        public B64StringWriter()
         {
             encodedValue = new StringBuilder(80);
         }
 
-        public Yescrypt64StringWriter WriteUint32Min(uint val, uint valMin)
+        public B64StringWriter WriteUint32Min(uint val, uint valMin)
         {
             uint start = 0;
             uint end = 47;
@@ -67,7 +67,7 @@ namespace Fasterlimit.Yescrypt
             return this;
         }
 
-        public Yescrypt64StringWriter WriteUint32Bits(uint val, int valBits)
+        public B64StringWriter WriteUint32Bits(uint val, int valBits)
         {
             for (uint bits = 0; bits < valBits; bits += 6)
             {
@@ -77,7 +77,7 @@ namespace Fasterlimit.Yescrypt
             return this;
         }
 
-        public Yescrypt64StringWriter WriteBytes(byte[] bytes)
+        public B64StringWriter WriteBytes(byte[] bytes)
         {
             for (int i = 0; i < bytes.Length;)
             {
@@ -96,7 +96,7 @@ namespace Fasterlimit.Yescrypt
             return this;
         }
 
-        public Yescrypt64StringWriter Reset()
+        public B64StringWriter Reset()
         {
             encodedValue.Clear();
             return this;

@@ -3,12 +3,12 @@ using System.Text;
 namespace tests
 {
     [TestClass]
-    public class Yescrypt64StringWriterTest
+    public class B64StringWriterTest
     {
         [TestMethod]
         public void TestWriteUint32Min()
         {
-            Yescrypt64StringWriter writer = new Yescrypt64StringWriter();
+            B64StringWriter writer = new B64StringWriter();
             Assert.AreEqual(".", writer.WriteUint32Min(0, 0).ToString());
             writer.Reset();
             Assert.AreEqual("/", writer.WriteUint32Min(1, 0).ToString());
@@ -33,7 +33,7 @@ namespace tests
         [ExpectedException(typeof(Yescrypt64StringWriterException))]
         public void TestWriteUint32MinInvalidMin()
         {
-            Yescrypt64StringWriter writer = new Yescrypt64StringWriter();
+            B64StringWriter writer = new B64StringWriter();
             writer.WriteUint32Min(1, 2);
         }
 
@@ -41,14 +41,14 @@ namespace tests
         [ExpectedException(typeof(Yescrypt64StringWriterException))]
         public void TestWriteUint32MinWithInvalidValue()
         {
-            Yescrypt64StringWriter writer = new Yescrypt64StringWriter();
+            B64StringWriter writer = new B64StringWriter();
             writer.WriteUint32Min(0x41084230, 0);
         }
 
         [TestMethod]
         public void TestWriteUint32Bits()
         {
-            Yescrypt64StringWriter writer = new Yescrypt64StringWriter();
+            B64StringWriter writer = new B64StringWriter();
             Assert.AreEqual("......", writer.WriteUint32Bits(0, 32).ToString());
             writer.Reset();
             Assert.AreEqual("/.....", writer.WriteUint32Bits(1, 32).ToString());
@@ -75,7 +75,7 @@ namespace tests
         [TestMethod]
         public void TestWriteBytes()
         {
-            Yescrypt64StringWriter writer = new Yescrypt64StringWriter();
+            B64StringWriter writer = new B64StringWriter();
             byte[] bytes;
 
             bytes = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };

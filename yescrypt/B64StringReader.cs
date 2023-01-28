@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("Tests")]
 namespace Fasterlimit.Yescrypt
 {
-    public class Yescrypt64StringReaderException : Exception
+    internal class Yescrypt64StringReaderException : Exception
     {
         public Yescrypt64StringReaderException(string message) : base(message) { }
     }
 
-    internal class Yescrypt64StringReader
+    internal class B64StringReader
     {
         private readonly byte[] atoi64_partial = new byte[77] {
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
@@ -35,7 +35,7 @@ namespace Fasterlimit.Yescrypt
             return (val >= '.' && val <= 'z') ? atoi64_partial[val - '.'] : 64u;
         }
 
-        public Yescrypt64StringReader(string encodedString)
+        public B64StringReader(string encodedString)
         {
             this.encodedValue = Encoding.ASCII.GetBytes(encodedString);
             this.currentIndex = 0;
@@ -126,73 +126,7 @@ namespace Fasterlimit.Yescrypt
             return rval;
         }
 
-        /*       
-        public byte[] ReadBytes(int length)
-        {
-            byte[] rval = new byte[length];
-            int rvalIndex = 0;
-
-            while (rvalIndex < rval.Length && currentIndex < encodedValue.Length)
-            {
-                uint value = 0;
-                int bits = 0;
-
-                while (currentIndex < encodedValue.Length)
-                {
-                    uint c = atoi64(encodedValue[currentIndex]);
-                    if (c > 63)
-                    {
-                        throw new Yescrypt64StringReaderException("Invalid encoding near index: " + currentIndex);
-                    }
-                    currentIndex++;
-                    value |= c << bits;
-                    bits += 6;
-                    if (bits >= 24)
-                    {
-                        break;
-                    }
-                }
-
-                if (bits == 0)
-                {
-                    break;
-                }
-                if (bits < 12)
-                {
-                    throw new Yescrypt64StringReaderException("Invalid Encoding.  Encoding must have at least one full byte near index: " + currentIndex);
-                }
-
-                while (rvalIndex < rval.Length)
-                {
-                    rval[rvalIndex++] = (byte)value;
-                    value >>= 8;
-                    bits -= 8;
-                    if (bits < 8)
-                    { 
-                        // 2 or 4
-                        if (value != 0)
-                        { 
-                            // must be 0
-                            throw new Yescrypt64StringReaderException("Invalid encoding at index: " + currentIndex);
-                        }
-                        bits = 0;
-                        break;
-                    }
-                }
-                if (bits != 0)
-                {
-                    throw new Yescrypt64StringReaderException($"Read of length: {length} is not aligned with encoding");
-                }
-            }
-
-            if(rvalIndex < rval.Length)
-            {
-                throw new Yescrypt64StringReaderException($"Only able to read {rvalIndex} bytes of {rval.Length}");
-            }
-
-            return rval;
-        }
-        */
+        
         
     }
 }
