@@ -85,7 +85,6 @@ namespace Fasterlimit.Yescrypt
                     uint xl = B[j * PWXsimple * 2];
                     uint xh = B[j * PWXsimple * 2 + 1];
 
-
                     /* 3: p0 <-- (lo(B_{j,0}) & Smask) / (PWXsimple * 8) */
                     uint p0 = (xl & Smask) / 4;
                     /* 4: p1 <-- (hi(B_{j,0}) & Smask) / (PWXsimple * 8) */
@@ -95,16 +94,8 @@ namespace Fasterlimit.Yescrypt
                     for (int k = 0; k < PWXsimple; k++)
                     {
                         ulong x, s0, s1;
-                        uint s0v0, s0v1;
-                        uint s1v0, s1v1;
-
-                        /* 6: B_{j,k} <-- (hi(B_{j,k}) * lo(B_{j,k}) + S0_{p0,k}) xor S1_{p1,k} */
-
-                        s0v0 = S0[p0 + k * 2 + 1];
-                        s0v1 = S0[p0 + k * 2];
-                        s1v0 = S1[p1 + k * 2 + 1];
-                        s1v1 = S1[p1 + k * 2];
-
+                        
+                        /* 6: B_{j,k} <-- (hi(B_{j,k}) * lo(B_{j,k}) + S0_{p0,k}) xor S1_{p1,k} */                     
                         s0 = ((ulong)(S0[p0 + k * 2 + 1]) << 32) + S0[p0 + k * 2];
                         s1 = ((ulong)(S1[p1 + k * 2 + 1]) << 32) + S1[p1 + k * 2];
 
@@ -152,7 +143,7 @@ namespace Fasterlimit.Yescrypt
             r1 = 128 * r / PWXbytes;
 
             /* 2: X <-- B'_{r_1 - 1} */
-            Helpers.BlockCopy(X, 0, B, (r1 - 1) * PWXwords, PWXwords);
+            Helper.BlockCopy(X, 0, B, (r1 - 1) * PWXwords, PWXwords);
 
             /* 3: for i = 0 to r_1 - 1 do */
             for (i = 0; i < r1; i++)
@@ -161,14 +152,14 @@ namespace Fasterlimit.Yescrypt
                 if (r1 > 1)
                 {
                     /* 5: X <-- X xor B'_i */
-                    Helpers.BlockXor(X, 0, B, i * PWXwords, PWXwords);
+                    Helper.BlockXor(X, 0, B, i * PWXwords, PWXwords);
                 }
 
                 /* 7: X <-- pwxform(X) */
                 Transform(X);
 
                 /* 8: B'_i <-- X */
-                Helpers.BlockCopy(B, i * PWXwords, X, 0, PWXwords);
+                Helper.BlockCopy(B, i * PWXwords, X, 0, PWXwords);
             }
 
             /* 10: i <-- floor((r_1 - 1) * PWXbytes / 64) */
@@ -181,10 +172,9 @@ namespace Fasterlimit.Yescrypt
 	        for (i++; i < 2 * r; i++) 
             {
                 /* 13: B_i <-- H(B_i xor B_{i-1}) */
-                Helpers.BlockXor(B, i * 16, B, (i - 1) * 16, 16);
+                Helper.BlockXor(B, i * 16, B, (i - 1) * 16, 16);
                 Salsa.Salsa20(B, i * 16, 2);
 	        }
         }
     }
-
 }

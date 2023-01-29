@@ -67,28 +67,28 @@ namespace Fasterlimit.Yescrypt
             uint[] X = new uint[16];
 
             /* 1: X <-- B_{2r - 1} */
-            Helpers.BlockCopy(X, 0, B, (2 * r - 1) * 16, 16);
+            Helper.BlockCopy(X, 0, B, (2 * r - 1) * 16, 16);
 
             /* 2: for i = 0 to 2r - 1 do */
             for (int i = 0; i < 2 * r; i++)
             {
                 /* 3: X <-- H(X xor B_i) */
-                Helpers.BlockXor(X, 0, B, i * 16, 16);
+                Helper.BlockXor(X, 0, B, i * 16, 16);
                 Salsa20(X, 0, 8);
 
                 /* 4: Y_i <-- X */
-                Helpers.BlockCopy(Y, i * 16, X, 0, 16);
+                Helper.BlockCopy(Y, i * 16, X, 0, 16);
             }
 
             /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
             for (int i = 0; i < r; i++)
             {
-                Helpers.BlockCopy(B, i * 16, Y, (i * 2) * 16, 16);
+                Helper.BlockCopy(B, i * 16, Y, (i * 2) * 16, 16);
             }
 
             for (int i = 0; i < r; i++)
             {
-                Helpers.BlockCopy(B, (i + r) * 16, Y, (i * 2 + 1) * 16, 16);
+                Helper.BlockCopy(B, (i + r) * 16, Y, (i * 2 + 1) * 16, 16);
             }
         }
     }
