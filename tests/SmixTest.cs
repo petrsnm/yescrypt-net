@@ -48,5 +48,46 @@ namespace tests
 
             CollectionAssert.AreEqual(expected, B);
         }
+
+        [TestMethod]
+        public void Smix2Test()
+        {
+            var pwxform = new Pwxform();
+
+            for (int i = 0; i < pwxform.S0.Length; i++)
+            {
+                pwxform.S2[i] = pwxform.S1[i] = pwxform.S0[i] = (uint)(i << 16 + i);
+            }
+
+            int N = 2048;
+            int r = 2;
+
+            uint[] B = new uint[r * 32];
+            for (uint i = 0; i < r * 32; i++)
+            {
+                B[i] = i;
+            }
+
+            uint[] V = new uint[32 * r * N];
+            uint[] XY = new uint[64 * r];
+
+
+            uint[] expected;
+
+            Smix.smix2(B, r, N, N - 1, Flags.YESCRYPT_RW_DEFAULTS, V, XY, pwxform);
+
+            expected = new uint[] {
+                0x884300b3, 0xc7770f43, 0xce3a1444, 0x7d14b7e5, 0xb376bc7e, 0xfff475b9, 0xcdfb00dd, 0x424d350f,
+                0xe980814d, 0xc05ebd9f, 0x0fb19fe6, 0x313d5db4, 0x41f4b42e, 0x8e2139a1, 0x6ed5cca6, 0x38753c78,
+                0x3a3b7fa3, 0x1eb41893, 0xd83cf953, 0xef133ac7, 0x3c8d8475, 0x83d6d79c, 0x4ca4e165, 0xa41cc88f,
+                0xed9276b4, 0xbdba61d5, 0x9f328d3b, 0x16c1a4ac, 0xd458cb2c, 0x12d99f70, 0x2ba202a4, 0xcf213108,
+                0xd8bb9be8, 0x0a766574, 0x84a07ae6, 0x977765fb, 0x5a832e4a, 0x1cc9d50a, 0x9129a074, 0x27f231cb,
+                0x8680e51e, 0xe6fb3490, 0xdce6c86b, 0x1ab20449, 0xd79279f4, 0x20af113e, 0xb9b495da, 0x9fc5c858,
+                0x4e70e5bd, 0x095260fe, 0xa0934ac3, 0x7379c392, 0xe8b9352e, 0xfe44c18a, 0x2b4e1296, 0xaf6167e5,
+                0x28fbc8c5, 0xbcb6aa05, 0x60dd9841, 0xb4bf47e3, 0x7200b836, 0xae64f996, 0xc2c28f34, 0x6c64a366
+            };
+
+            CollectionAssert.AreEqual(expected, B);
+        }
     }
 }
