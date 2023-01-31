@@ -8,7 +8,7 @@ namespace Fasterlimit.Yescrypt
 {
     internal class Helper
     {
-        public static void WordsToBytes( byte[] dst, uint dstIndex, uint[] src, uint srcIndex, uint wordCount)
+        public static void WordsToBytes( uint[] src, uint srcIndex, byte[] dst, uint dstIndex, int wordCount)
         {
             while (wordCount > 0) 
             {
@@ -19,7 +19,7 @@ namespace Fasterlimit.Yescrypt
             }
         }
 
-        public static void WordsFromBytes( uint[] dst, uint dstIndex, byte[] src, uint srcIndex, uint wordCount)
+        public static void WordsFromBytes(  byte[] src, uint srcIndex, uint[] dst, uint dstIndex, int wordCount)
         {
             while (wordCount > 0)
             {

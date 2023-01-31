@@ -116,8 +116,13 @@ namespace Fasterlimit.Yescrypt
          * XY must be 256r bytes in length.  The value N must be a power of 2 greater
          * than 1.
          */
-        public static void Mix(uint[] B, uint r, uint N, uint p, uint t, uint flags, uint[] V, uint[] XY, Blockmixer[] ctx, byte[] passwd)
+        public static void Mix(uint[] B, uint bIndex, uint r, uint N, uint flags, uint[] V, ref byte[] passwd)
         {
+            // We only support p=1 and t=0;
+            uint p = 1;
+            uint t = 0;            
+
+            uint[] XY = new uint[64 * r];
 
             /* 1: n <-- N / p */
             uint Nchunk = N / p;
@@ -150,6 +155,7 @@ namespace Fasterlimit.Yescrypt
             /* 11: for i = 0 to p - 1 do */
             /* 12: u <-- in */
             uint s = 32u * r;
+            Blockmixer[] mixers = new Blockmixer[p];
             for (uint i = 0, Vchunk = 0; i < p; i++, Vchunk += Nchunk)
             {
                 /* 13: if i = p - 1 */
@@ -157,7 +163,7 @@ namespace Fasterlimit.Yescrypt
                 /* 15: end if */
                 /* 16: v <-- u + n - 1 */
                 uint Np = (i < p - 1) ? Nchunk : (N - Vchunk);
-                uint Bp = i * s;
+                uint Bp = (i * s) + bIndex;
                 uint Vp = Vchunk * s;
 
                 /* 17: if YESCRYPT_RW flag is set */
@@ -166,13 +172,13 @@ namespace Fasterlimit.Yescrypt
                     uint[] S = new uint[PwxFormBlockmixer.SboxWords * 3];
                     /* 18: SMix1_1(B_i, Sbytes / 128, S_i, no flags) */
                     smix1(B, Bp, 1, (PwxFormBlockmixer.SboxWords * 3)/32, 0, S, 0, XY, new Salsa8Blockmixer());
-                    ctx[i] = new PwxFormBlockmixer(S);
+                    mixers[i] = new PwxFormBlockmixer(S);
                     if (i == 0)
                     {
 
                         /* 24: passwd <-- HMAC-SHA256(B_{0,2r-1}, passwd) */
                         byte[] key = new byte[64];
-                        Helper.WordsToBytes( key, 0, B, Bp + (s - 16), (uint) key.Length / 4);
+                        Helper.WordsToBytes( B, Bp + (s - 16), key, 0,  key.Length / 4);
 
                         var hmacsha256 = new HMACSHA256(key);
                         var passwdHash = hmacsha256.ComputeHash(passwd, 0, 32);
@@ -180,9 +186,9 @@ namespace Fasterlimit.Yescrypt
                     }
 
                     /* 27: SMix1_r(B_i, n, V_{u..v}, flags) */
-                    smix1(B, Bp, r, Np, flags, V, Vp, XY, ctx[i]);
+                    smix1(B, Bp, r, Np, flags, V, Vp, XY, mixers[i]);
                     /* 28: SMix2_r(B_i, p2floor(n), Nloop_rw, V_{u..v}, flags) */
-                    smix2(B, Bp, r, Helper.P2floor(Np), Nloop_rw, flags, V, Vp, XY, ctx[i]);
+                    smix2(B, Bp, r, Helper.P2floor(Np), Nloop_rw, flags, V, Vp, XY, mixers[i]);
 
                 }
                 else
@@ -196,9 +202,9 @@ namespace Fasterlimit.Yescrypt
             /* 30: for i = 0 to p - 1 do */
             for (uint i = 0; i < p; i++)
             {
-                uint Bp = i * s;
+                uint Bp = (i * s) + bIndex;
                 /* 31: SMix2_r(B_i, N, Nloop_all - Nloop_rw, V, flags excluding YESCRYPT_RW) */
-                smix2(B, Bp, r, N, Nloop_all - Nloop_rw, flags & ~Flags.YESCRYPT_RW, V, 0, XY, (flags & Flags.YESCRYPT_RW) !=0 ? ctx[i] : new Salsa8Blockmixer());
+                smix2(B, Bp, r, N, Nloop_all - Nloop_rw, flags & ~Flags.YESCRYPT_RW, V, 0, XY, (flags & Flags.YESCRYPT_RW) !=0 ? mixers[i] : new Salsa8Blockmixer());
             }
         }  
 

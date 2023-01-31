@@ -156,8 +156,6 @@ namespace tests
         {        
             uint N = 2048;
             uint r = 2;
-            uint p = 1;
-            uint t = 0;
 
             uint[] B = new uint[r * 32];
             for (uint i = 0; i < r * 32; i++)
@@ -165,14 +163,13 @@ namespace tests
                 B[i] = i;
             }
 
-            uint[] V = new uint[32 * r * N];
-            uint[] XY = new uint[64 * r];
+            uint[] V = new uint[32 * r * N];           
             uint[] expected;
             byte[] expectedPasswd;
 
 
             byte[] passwd = new byte[32]; 
-            Smix.Mix(B, r, N, p, t, Flags.YESCRYPT_RW, V, XY, new Blockmixer[1], passwd);
+            Smix.Mix(B, 0, r, N, Flags.YESCRYPT_RW, V,ref passwd);
             expected = new uint[] { 
                 0x26c60121, 0x3f14a162, 0x5e0602b9, 0x6e16f2c6, 0x395ff920, 0x920006d3, 0xba4ecd91, 0x82f215ee, 
                 0xf3652648, 0x424bd230, 0xcff4eabf, 0xaa71508d, 0x7060a382, 0x71ae14e2, 0x05ccbdd5, 0x67eeae47, 
