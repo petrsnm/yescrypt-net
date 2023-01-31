@@ -34,7 +34,7 @@ namespace tests
                 s0[i] = s1[i] = s2[i] = (uint)(i << 16 + i);
             }
             Blockmixer blockmixer = new PwxFormBlockmixer(s0, s1, s2);
-            Smix.smix1(B, 0, r, N, Flags.YESCRYPT_RW_DEFAULTS, V, 0, XY, blockmixer);
+            Smix.smix1(B, 0, r, N, YescryptFlags.YESCRYPT_RW_DEFAULTS, V, 0, XY, blockmixer);
             expected = new uint[] {
                 0x01a573d3, 0xdb6a5b98, 0x9b2a8e2c, 0x97f833ac, 0xe03b2026, 0xb24a3c83, 0x780b11fc, 0x78f931e5,
                 0x1691c32c, 0x8e79f513, 0x839dad28, 0x8520f143, 0xcb42035d, 0xd8a52649, 0x724f4714, 0x6b662c7f,
@@ -106,7 +106,7 @@ namespace tests
                 s0[i] = s1[i] = s2[i] = (uint)(i << 16 + i);
             }
             Blockmixer blockmixer = new PwxFormBlockmixer(s0, s1, s2);
-            Smix.smix2(B, 0, r, N, N - 1, Flags.YESCRYPT_RW_DEFAULTS, V, 0, XY, blockmixer);
+            Smix.smix2(B, 0, r, N, N - 1, YescryptFlags.YESCRYPT_RW_DEFAULTS, V, 0, XY, blockmixer);
             expected = new uint[] {
                 0x884300b3, 0xc7770f43, 0xce3a1444, 0x7d14b7e5, 0xb376bc7e, 0xfff475b9, 0xcdfb00dd, 0x424d350f,
                 0xe980814d, 0xc05ebd9f, 0x0fb19fe6, 0x313d5db4, 0x41f4b42e, 0x8e2139a1, 0x6ed5cca6, 0x38753c78,
@@ -169,7 +169,7 @@ namespace tests
 
 
             byte[] passwd = new byte[32]; 
-            Smix.Mix(B, 0, r, N, Flags.YESCRYPT_RW, V,ref passwd);
+            Smix.Mix(B, 0, r, N, YescryptFlags.YESCRYPT_RW, V,ref passwd);
             expected = new uint[] { 
                 0x26c60121, 0x3f14a162, 0x5e0602b9, 0x6e16f2c6, 0x395ff920, 0x920006d3, 0xba4ecd91, 0x82f215ee, 
                 0xf3652648, 0x424bd230, 0xcff4eabf, 0xaa71508d, 0x7060a382, 0x71ae14e2, 0x05ccbdd5, 0x67eeae47, 

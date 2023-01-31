@@ -38,7 +38,7 @@ namespace Fasterlimit.Yescrypt
                 /* 3: V_i <-- X */
                 Helper.BlockCopy(V, (i * s) + vIndex, X, 0, s);
 
-                if ((flags & Flags.YESCRYPT_RW) != 0 && i > 1)
+                if ((flags & YescryptFlags.YESCRYPT_RW) != 0 && i > 1)
                 {
                     /* j <-- Wrap(Integerify(X), i) */
                     uint j = Helper.wrap((uint)Helper.Integerify(X, 0, r), i);
@@ -91,7 +91,7 @@ namespace Fasterlimit.Yescrypt
                 Helper.BlockXor(X, 0, V, (j * s) + vIndex, s);
 
                 /* V_j <-- X */
-                if ((flags & Flags.YESCRYPT_RW) != 0)
+                if ((flags & YescryptFlags.YESCRYPT_RW) != 0)
                 {
                     Helper.BlockCopy(V, (j * s) + vIndex, X, 0, s);
                 }
@@ -167,7 +167,7 @@ namespace Fasterlimit.Yescrypt
                 uint Vp = Vchunk * s;
 
                 /* 17: if YESCRYPT_RW flag is set */
-                if ((flags & Flags.YESCRYPT_RW) != 0)
+                if ((flags & YescryptFlags.YESCRYPT_RW) != 0)
                 {
                     uint[] S = new uint[PwxFormBlockmixer.SboxWords * 3];
                     /* 18: SMix1_1(B_i, Sbytes / 128, S_i, no flags) */
@@ -204,7 +204,7 @@ namespace Fasterlimit.Yescrypt
             {
                 uint Bp = (i * s) + bIndex;
                 /* 31: SMix2_r(B_i, N, Nloop_all - Nloop_rw, V, flags excluding YESCRYPT_RW) */
-                smix2(B, Bp, r, N, Nloop_all - Nloop_rw, flags & ~Flags.YESCRYPT_RW, V, 0, XY, (flags & Flags.YESCRYPT_RW) !=0 ? mixers[i] : new Salsa8Blockmixer());
+                smix2(B, Bp, r, N, Nloop_all - Nloop_rw, flags & ~YescryptFlags.YESCRYPT_RW, V, 0, XY, (flags & YescryptFlags.YESCRYPT_RW) !=0 ? mixers[i] : new Salsa8Blockmixer());
             }
         }  
 

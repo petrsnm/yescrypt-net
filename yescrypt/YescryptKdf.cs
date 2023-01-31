@@ -11,29 +11,27 @@ using System.Threading.Tasks;
 
 namespace Fasterlimit.Yescrypt
 {
-    public class Yescrypt
+    public class YescryptKdf
     {
-        /**
-         * yescrypt_kdf_body(shared, local, passwd, passwdlen, salt, saltlen,
-         *     flags, N, r, p, t, NROM, buf, buflen):
-         * Compute scrypt(passwd[0 .. passwdlen - 1], salt[0 .. saltlen - 1], N, r,
-         * p, buflen), or a revision of scrypt as requested by flags and shared, and
-         * write the result into buf.
-         *
-         * shared and flags may request special modes as described in yescrypt.h.
-         *
-         * local is the thread-local data structure, allowing optimized implementations
-         * to preserve and reuse a memory allocation across calls, thereby reducing its
-         * overhead (this reference implementation does not make that optimization).
-         *
-         * t controls computation time while not affecting peak memory usage.
-         *
-         * Return 0 on success; or -1 on error.
-         */
-        public byte[] DeriveKey(byte[] passwd, byte[] salt, uint flags, uint N, uint r, int length)
+        uint Flags;
+        uint N;
+        uint r; 
+
+        public YescryptKdf(uint flags, uint N, uint r )
+        {
+            Flags = flags;
+            this.N = N;
+            this.r = r;             
+        }
+
+        public YescryptKdf() : this(YescryptFlags.YESCRYPT_RW_DEFAULTS, 2048, 8)
+        {
+        }
+       
+        public byte[] DeriveKey(byte[] passwd, byte[] salt, int keyLength)
         {
             uint[] V = new uint[32 * r * N];
-            uint[] B = new uint[32 * r ];
+            uint[] B = new uint[32 * r];
             byte[] sha256 = new byte[32];
             
             byte[] key = Encoding.ASCII.GetBytes("yescrypt");
@@ -50,14 +48,14 @@ namespace Fasterlimit.Yescrypt
                 Array.Copy(bytes, sha256, sha256.Length);
             }
 
-            if ((flags & Flags.YESCRYPT_RW) !=0)
+            if ((Flags & YescryptFlags.YESCRYPT_RW) !=0)
             {
-                Smix.Mix(B,0, r, N, flags, V, ref sha256);
+                Smix.Mix(B, 0, r, N, Flags, V, ref sha256);
             }
             else
             {
                 /* 3: B_i <-- MF(B_i, N) */
-                Smix.Mix( B, 4 * r, r, N, flags, V, ref sha256);                
+                Smix.Mix( B, 4 * r, r, N, Flags, V, ref sha256);                
             }
 
             /* 5: DK <-- PBKDF2(P, B, 1, dkLen) */
@@ -66,7 +64,7 @@ namespace Fasterlimit.Yescrypt
             byte[] dk;
             using (var pbkdf2 = new Rfc2898DeriveBytes(sha256, eSalt, 1, HashAlgorithmName.SHA256))
             {
-                dk = pbkdf2.GetBytes(length < 32 ? 32 : length);
+                dk = pbkdf2.GetBytes(keyLength < 32 ? 32 : keyLength);
             }
 
             /*
@@ -85,17 +83,17 @@ namespace Fasterlimit.Yescrypt
                 sha256 = hmacsha256.ComputeHash(Encoding.ASCII.GetBytes("Client Key"));
                 sha256 = SHA256.HashData(sha256);
 
-                if (length > sha256.Length)
+                if (keyLength > sha256.Length)
                 {
                     Array.Copy(sha256, dk, sha256.Length);                                   
                 }
                 else
                 {
-                    dk = new byte[length];
+                    dk = new byte[keyLength];
                     Array.Copy(sha256, dk, dk.Length);
                 }
 
-                return dk;                
+                return dk;               
                 
             }
         }
