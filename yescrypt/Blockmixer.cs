@@ -5,18 +5,61 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace Fasterlimit.Yescrypt
 {
+    internal interface Blockmixer
+    {
+        public void Blockmix(uint[] B, uint r);
+    }
 
-    internal class Pwxform
+    internal class Salsa8Blockmixer : Blockmixer
+    {
+        public Salsa8Blockmixer()
+        {
+        }
+
+        public void Blockmix(uint[] B, uint r)
+        {
+            uint[] X = new uint[16];
+            uint[] Y = new uint[32 * r];
+
+            /* 1: X <-- B_{2r - 1} */
+            Helper.BlockCopy(X, 0, B, (2 * r - 1) * 16, 16);
+
+            /* 2: for i = 0 to 2r - 1 do */
+            for (uint i = 0; i < 2 * r; i++)
+            {
+                /* 3: X <-- H(X xor B_i) */
+                Helper.BlockXor(X, 0, B, i * 16, 16);
+                Salsa.Salsa20(X, 0, 8);
+
+                /* 4: Y_i <-- X */
+                Helper.BlockCopy(Y, i * 16, X, 0, 16);
+            }
+
+            /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
+            for (uint i = 0; i < r; i++)
+            {
+                Helper.BlockCopy(B, i * 16, Y, (i * 2) * 16, 16);
+            }
+
+            for (uint i = 0; i < r; i++)
+            {
+                Helper.BlockCopy(B, (i + r) * 16, Y, (i * 2 + 1) * 16, 16);
+            }
+        }
+    }
+
+    internal class PwxFormBlockmixer : Blockmixer
     {
         const int PWXsimple = 2;
         const int PWXgather = 4;
         const int PWXrounds = 6;
         const int Swidth = 8;
 
-        public uint Smask
+        public static uint Smask
         {
             get
             {
@@ -24,7 +67,7 @@ namespace Fasterlimit.Yescrypt
             }
         }
 
-        public int PWXbytes
+        public static uint PWXbytes
         {
             get
             {
@@ -32,7 +75,7 @@ namespace Fasterlimit.Yescrypt
             }
         }
 
-        public int PWXwords
+        public static uint PWXwords
         {
             get
             {
@@ -40,32 +83,55 @@ namespace Fasterlimit.Yescrypt
             }
         }
 
-        public uint[] S0
+        public static uint SboxWords
         {
-            get; set;
+            get
+            {
+                return (1 << Swidth) * PWXsimple * 2;
+            }
         }
 
-        public uint[] S1
+        uint[] S0;
+        uint[] S1;
+        uint[] S2;
+        uint W;
+        
+
+        public PwxFormBlockmixer()
         {
-            get; set;
+            S0 = new uint[SboxWords];
+            S1 = new uint[SboxWords];
+            S2 = new uint[SboxWords];
+            W = 0;
+        }
+        public PwxFormBlockmixer(uint[] s0, uint[] s1, uint[] s2)
+        {
+           if(s0.Length != SboxWords ||
+              s1.Length != SboxWords ||
+              s2.Length != SboxWords )
+            {
+                throw new ArgumentException("Individual sbox arrays must have length: " + SboxWords);
+            }
+
+            S0 = s0;
+            S1 = s1;
+            S2 = s2;
+            W = 0;
         }
 
-        public uint[] S2
+        public PwxFormBlockmixer(uint[] s) : this() 
         {
-            get; set;
-        }
+            if (s.Length != SboxWords * 3)
+            {
+                throw new ArgumentException("Sbox array have length: " + SboxWords);
+            }
 
-        public uint W
-        {
-            get; set;
-        }
-
-        public Pwxform()
-        {
-            int sboxUints = (1 << Swidth) * PWXsimple * 2;
-            S0 = new uint[sboxUints];
-            S1 = new uint[sboxUints];
-            S2 = new uint[sboxUints];
+            uint i = 0;
+            Array.Copy(s, i, S2, 0, SboxWords);
+            i += SboxWords;
+            Array.Copy(s, i, S1, 0, SboxWords);
+            i += SboxWords;
+            Array.Copy(s, i, S0, 0, SboxWords);
             W = 0;
         }
 
@@ -94,8 +160,8 @@ namespace Fasterlimit.Yescrypt
                     for (int k = 0; k < PWXsimple; k++)
                     {
                         ulong x, s0, s1;
-                        
-                        /* 6: B_{j,k} <-- (hi(B_{j,k}) * lo(B_{j,k}) + S0_{p0,k}) xor S1_{p1,k} */                     
+
+                        /* 6: B_{j,k} <-- (hi(B_{j,k}) * lo(B_{j,k}) + S0_{p0,k}) xor S1_{p1,k} */
                         s0 = ((ulong)(S0[p0 + k * 2 + 1]) << 32) + S0[p0 + k * 2];
                         s1 = ((ulong)(S1[p1 + k * 2 + 1]) << 32) + S1[p1 + k * 2];
 
@@ -131,12 +197,10 @@ namespace Fasterlimit.Yescrypt
             W = w & ((1 << Swidth) * PWXsimple - 1);
         }
 
-
-
-        public void Blockmix(uint[] B, int r)
+        public void Blockmix(uint[] B, uint r)
         {
             uint[] X = new uint[PWXwords];
-            int r1, i;
+            uint r1, i;
 
             /* Convert 128-byte blocks to PWXbytes blocks */
             /* 1: r_1 <-- 128r / PWXbytes */
@@ -166,15 +230,15 @@ namespace Fasterlimit.Yescrypt
             i = (r1 - 1) * PWXbytes / 64;
 
             /* 11: B_i <-- H(B_i) */
-            Salsa.Salsa20(B, i * 16, 2);
+            Salsa.Salsa20(B, i * 16u, 2);
 
-	        /* 12: for i = i + 1 to 2r - 1 do */
-	        for (i++; i < 2 * r; i++) 
+            /* 12: for i = i + 1 to 2r - 1 do */
+            for (i++; i < 2 * r; i++)
             {
                 /* 13: B_i <-- H(B_i xor B_{i-1}) */
                 Helper.BlockXor(B, i * 16, B, (i - 1) * 16, 16);
                 Salsa.Salsa20(B, i * 16, 2);
-	        }
-        }
+            }
+        }        
     }
 }

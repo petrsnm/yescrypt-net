@@ -16,12 +16,12 @@ namespace Fasterlimit.Yescrypt
         /**
          * Apply the Salsa20 core to the provided block.
         */
-        public static void Salsa20(uint[] B, int Bindex, uint rounds)
+        public static void Salsa20(uint[] B, uint Bindex, uint rounds)
         {
             uint[] x = new uint[16];
 
             /// SIMD unshuffle
-            for (int i = Bindex; i < 16 + Bindex; i++)
+            for (uint i = Bindex; i < 16 + Bindex; i++)
             {
                 x[i * 5 % 16] = B[i];
             }
@@ -56,40 +56,10 @@ namespace Fasterlimit.Yescrypt
             }
 
             // SIMD shuffle 
-            for (int i = Bindex; i < 16 + Bindex; i++)
+            for (uint i = Bindex; i < 16 + Bindex; i++)
             {
                 B[i] += x[i * 5 % 16];
             }
-        }        
-
-        public static void BlockmixSalsa8(uint[] B, uint[] Y, int r)
-        {
-            uint[] X = new uint[16];
-
-            /* 1: X <-- B_{2r - 1} */
-            Helper.BlockCopy(X, 0, B, (2 * r - 1) * 16, 16);
-
-            /* 2: for i = 0 to 2r - 1 do */
-            for (int i = 0; i < 2 * r; i++)
-            {
-                /* 3: X <-- H(X xor B_i) */
-                Helper.BlockXor(X, 0, B, i * 16, 16);
-                Salsa20(X, 0, 8);
-
-                /* 4: Y_i <-- X */
-                Helper.BlockCopy(Y, i * 16, X, 0, 16);
-            }
-
-            /* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-            for (int i = 0; i < r; i++)
-            {
-                Helper.BlockCopy(B, i * 16, Y, (i * 2) * 16, 16);
-            }
-
-            for (int i = 0; i < r; i++)
-            {
-                Helper.BlockCopy(B, (i + r) * 16, Y, (i * 2 + 1) * 16, 16);
-            }
-        }
+        }                
     }
 }
