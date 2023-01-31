@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -43,7 +44,7 @@ namespace Fasterlimit.Yescrypt
 
         public uint ReadUint32Min(uint min)
         {
-            uint rval = 0;
+            uint rval;
             uint start = 0;
             uint end = 47;
             uint chars = 1;
@@ -87,7 +88,7 @@ namespace Fasterlimit.Yescrypt
             uint rval = 0;
 
             for (int bits = 0; bits < valBits; bits += 6)
-            {
+            {               
                 uint c = atoi64(encodedValue[currentIndex++]);
                 if (c > 63)
                 {
@@ -103,30 +104,42 @@ namespace Fasterlimit.Yescrypt
         {
             byte[] rval = new byte[length];
             int rvalIndex = 0;
-            int bits;
-            for (bits = length * 8; bits > 23; bits -= 24)
+
+            int bitsAvailable = (encodedValue.Length - currentIndex) * 6;
+            int bitsRequested = length * 8;
+
+            int bits = bitsAvailable > bitsRequested ? bitsRequested : bitsAvailable;
+            for (; bits > 23; bits -= 24)
             {
-                uint val = ReadUint32Bits(24);                
-                for(int i=0; i<3; i++)
-                {
-                    rval[rvalIndex++] = (byte)(val & 0xff);
-                    val >>= 8;
-                }                
-            }
-            if(bits > 0)
-            {
-                uint val = ReadUint32Bits(bits);
-                for (int i = 0; i < bits / 8; i++)
+                uint val = ReadUint32Bits(24);
+                for (int i = 0; i < 3; i++)
                 {
                     rval[rvalIndex++] = (byte)(val & 0xff);
                     val >>= 8;
                 }
             }
+            if (bits > 0 )
+            {
+                uint val = ReadUint32Bits(bits);
+                for (int i = 0; i < bits / 6; i++)
+                {
+                    rval[rvalIndex++] = (byte)(val & 0xff);
+                    val >>= 8;
+                }
+            }   
+            
+            if(rvalIndex < rval.Length)
+            {
+                Array.Resize(ref rval, rvalIndex - 1);
+            }
 
             return rval;
         }
 
-        
+        public bool HasMore()
+        {
+            return currentIndex < encodedValue.Length;            
+        }
         
     }
 }

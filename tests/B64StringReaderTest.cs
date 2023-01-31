@@ -131,7 +131,11 @@ namespace tests
             CollectionAssert.AreEqual(bytes, reader.ReadBytes(2));
             bytes = new byte[] { 0xac, 0xd9, 0xa4, 0x20, 0x1c, 0xf4, 0xa4, 0x76, 0xec, 0xf7, 0xba, 0xa6, 0x11, 0x3d };
             CollectionAssert.AreEqual(bytes, reader.ReadBytes(14));
-            
+
+            reader = new B64StringReader("gaBdUk/xYO5vrffdFo1");
+            bytes = new byte[] { 0xac, 0xd9, 0xa4, 0x20, 0x1c, 0xf4, 0xa4, 0x76, 0xec, 0xf7, 0xba, 0xa6, 0x11, 0x3d };
+            CollectionAssert.AreEqual(bytes, reader.ReadBytes(32)); 
+
         }
     }
 }

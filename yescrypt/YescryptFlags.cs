@@ -29,5 +29,7 @@ namespace Fasterlimit.Yescrypt
         public static readonly uint YESCRYPT_SBOX_384K = 0x300;
         public static readonly uint YESCRYPT_SBOX_768K = 0x380;
         public static readonly uint YESCRYPT_RW_DEFAULTS = (YESCRYPT_RW | YESCRYPT_ROUNDS_6 | YESCRYPT_GATHER_4 | YESCRYPT_SIMPLE_2 | YESCRYPT_SBOX_12K);
+        public static readonly uint YESCRYPT_RW_FLAVOR_MASK = 0x3fc;
+        public static readonly uint YESCRYPT_PREHASH = 0x10000000;
     }
 }

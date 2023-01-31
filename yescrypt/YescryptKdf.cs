@@ -28,13 +28,13 @@ namespace Fasterlimit.Yescrypt
         {
         }
        
-        public byte[] DeriveKey(byte[] passwd, byte[] salt, int keyLength)
+        public byte[] DeriveKey(byte[] passwd, byte[] salt, bool isPrehash, int keyLength)
         {
             uint[] V = new uint[32 * r * N];
             uint[] B = new uint[32 * r];
             byte[] sha256 = new byte[32];
-            
-            byte[] key = Encoding.ASCII.GetBytes("yescrypt");
+
+            byte[] key = Encoding.ASCII.GetBytes(isPrehash ? "yescrypt-prehash" : "yescrypt");
             byte[] passwdHash; 
             using (var hmacsha256 = new HMACSHA256(key))
             {
@@ -67,35 +67,38 @@ namespace Fasterlimit.Yescrypt
                 dk = pbkdf2.GetBytes(keyLength < 32 ? 32 : keyLength);
             }
 
-            /*
-             * Except when computing classic scrypt, allow all computation so far
-             * to be performed on the client.  The final steps below match those of
-             * SCRAM (RFC 5802), so that an extension of SCRAM (with the steps so
-             * far in place of SCRAM's use of PBKDF2 and with SHA-256 in place of
-             * SCRAM's use of SHA-1) would be usable with yescrypt hashes.
-             */
-
-            /* Compute ClientKey */
-            byte[] dk32 = new byte[32];
-            Array.Copy(dk, dk32, dk32.Length);
-            using (var hmacsha256 = new HMACSHA256(dk32))
+            if (!isPrehash)
             {
-                sha256 = hmacsha256.ComputeHash(Encoding.ASCII.GetBytes("Client Key"));
-                sha256 = SHA256.HashData(sha256);
+                /*
+                 * Except when computing classic scrypt, allow all computation so far
+                 * to be performed on the client.  The final steps below match those of
+                 * SCRAM (RFC 5802), so that an extension of SCRAM (with the steps so
+                 * far in place of SCRAM's use of PBKDF2 and with SHA-256 in place of
+                 * SCRAM's use of SHA-1) would be usable with yescrypt hashes.
+                 */
 
-                if (keyLength > sha256.Length)
+                /* Compute ClientKey */
+                byte[] dk32 = new byte[32];
+                Array.Copy(dk, dk32, dk32.Length);
+                using (var hmacsha256 = new HMACSHA256(dk32))
                 {
-                    Array.Copy(sha256, dk, sha256.Length);                                   
-                }
-                else
-                {
-                    dk = new byte[keyLength];
-                    Array.Copy(sha256, dk, dk.Length);
-                }
+                    sha256 = hmacsha256.ComputeHash(Encoding.ASCII.GetBytes("Client Key"));
+                    sha256 = SHA256.HashData(sha256);
 
-                return dk;               
-                
+                    if (keyLength > sha256.Length)
+                    {
+                        Array.Copy(sha256, dk, sha256.Length);
+                    }
+                    else
+                    {
+                        dk = new byte[keyLength];
+                        Array.Copy(sha256, dk, dk.Length);
+                    }
+
+                }
             }
+
+            return dk;
         }
     }
 }
