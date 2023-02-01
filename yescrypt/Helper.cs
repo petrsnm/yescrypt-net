@@ -8,6 +8,7 @@ namespace Fasterlimit.Yescrypt
 {
     internal class Helper
     {
+       
         public static void WordsToBytes( uint[] src, uint srcIndex, byte[] dst, uint dstIndex, int wordCount)
         {
             while (wordCount > 0) 

@@ -12,9 +12,14 @@ namespace tests
         [TestMethod]
         public void TestCheckPasswd()
         {
-            Assert.IsTrue(Yescrypt.CheckPasswd("Test12345", "$y$j9T$hMDx1X7.Y3T.Q9EAwbRjz/$qZtAjQMr0plVTDQL/cL128rWowQjJmhicme07W7Onb/"));
-
+            Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("Test12345"), "$y$j9T$CoUww2aXLQYsu1DSF5GRN.$QMv6evLbghgjmlWPbRbFrUjYMWqrZ.Xpi4ydv6S5eS4"));
         }
-           
+
+        [TestMethod]
+        public void TestChangePasswd()
+        {
+            string newVal = Yescrypt.ChangePasswd(Encoding.ASCII.GetBytes("Test123456"), "$y$j9T$CoUww2aXLQYsu1DSF5GRN.$QMv6evLbghgjmlWPbRbFrUjYMWqrZ.Xpi4ydv6S5eS4");
+            Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("Test123456"), newVal));
+        }       
     }
 }
