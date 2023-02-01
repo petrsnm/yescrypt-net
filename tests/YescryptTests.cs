@@ -29,19 +29,6 @@ namespace tests
             string newVal = Yescrypt.NewPasswd(Encoding.ASCII.GetBytes("foobar"), settings);
             Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foobar"), newVal));
             Assert.IsFalse(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foobaz"), newVal));
-        }
-
-        public static void main(string args[])
-        {
-            byte[] passwd = Encoding.UTF8.GetBytes("passw0rd");
-             if (Yescrypt.CheckPasswd(passwd, "$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9"))
-            {
-                Console.WriteLine("Correct");
-            }
-            else
-            {                 
-                Console.WriteLine("Incorrect");
-            }
-        }
+        }       
     }
 }
