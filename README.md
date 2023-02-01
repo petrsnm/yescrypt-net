@@ -20,16 +20,16 @@ Using the yescrypt value from the line above, you can write code like this to va
 ``` c#
 using fasterlimit.yescrypt
 
-public static void main(string args[])
+public static void main(string[] args)
 {
-    byte [] passwd = Encoding.UTF8.GetBytes("passw0rd")
-    if(Yescrypt.CheckPasswd(passwd, "$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9"))
+    byte[] passwd = Encoding.UTF8.GetBytes("passw0rd");
+        if (Yescrypt.CheckPasswd(passwd, "$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9"))
     {
-        Console.Writeln("Correct");
+        Console.WriteLine("Correct");
     }
     else
-    {
-        Console.Writeln("Incorrect");
+    {                 
+        Console.WriteLine("Incorrect");
     }
 }
 ```
