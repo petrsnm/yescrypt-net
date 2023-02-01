@@ -2,6 +2,10 @@
 
 .NET implementation of the yescrypt a password-based key derivation function (KDF) and password hashing scheme.
 
+## Packaging
+
+TODO: Add packaging info here
+
 ## Implementation Notes
 
 This implementation is suitable for simple validation of passwords against the yescrypt hash that can be found in the /etc/shadow file on modern linux distos:
