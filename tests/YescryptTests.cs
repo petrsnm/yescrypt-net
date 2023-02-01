@@ -10,7 +10,15 @@ namespace tests
         public void TestCheckPasswd()
         {
             Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foo"), "$y$j9T$IYOtk1P7X7XerR2MxSBt41$ylOTRMdaL7amUytGWDGmMeCvzk3yPxMwliVqAMmeuUB"));
+            Assert.IsFalse(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foobar"), "$y$j9T$IYOtk1P7X7XerR2MxSBt41$ylOTRMdaL7amUytGWDGmMeCvzk3yPxMwliVqAMmeuUB"));
             Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("klâwen"), "$y$j9T$gdl4VsceJ0dcK65iQQZzc0$7b08F6h5QwLdzQVhJlbT1LakWThuW7MLEGrRV5S.X0C"));
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void TestThrowOnWORM()
+        {
+            Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("pleaseletmein"), "$y$/A2$LdJMENpBABJJ3hIHj/$5IEld1eWdmh5lylrqHLF5dvA3ISpimEM9J1Dd05n/.3");
         }
 
         [TestMethod]

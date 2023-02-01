@@ -99,11 +99,11 @@ namespace Fasterlimit.Yescrypt
 
             // Decode Salt
             reader = new B64StringReader(parts[3]);
-            salt = reader.ReadBytes(parts[3].Length * 4 + 1);
+            salt = reader.ReadBytes(16);
 
             // Decode Key
             reader = new B64StringReader(parts[4]);
-            key = reader.ReadBytes(parts[4].Length * 4 + 1);
+            key = reader.ReadBytes(32);
         }
 
         private uint N2log2(uint N)

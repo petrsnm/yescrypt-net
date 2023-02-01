@@ -26,6 +26,11 @@ namespace Fasterlimit.Yescrypt
             uint[] B = new uint[32 * r];
             byte[] sha256 = new byte[32];
 
+            if (Flags == 1)
+            {
+                throw new NotImplementedException("YESCRYPT_WORM not supported");
+            }
+
             byte[] key = Encoding.ASCII.GetBytes(isPrehash ? "yescrypt-prehash" : "yescrypt");
             byte[] passwdHash; 
             using (var hmacsha256 = new HMACSHA256(key))
