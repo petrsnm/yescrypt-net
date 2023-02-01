@@ -6,7 +6,7 @@
 
 TODO: Add packaging info here
 
-## Implementation Notes
+## Usage
 
 This implementation is suitable for simple validation of passwords against the yescrypt hash that can be found in the /etc/shadow file on modern linux distos:
 
@@ -44,6 +44,10 @@ The Yescrypt class has two other useful methods:
     * Output output: yescrypt string with new salt and password hash
 
 You can also use the raw `YescryptKdf` class if you want complete control of the KDF. 
+
+## Packaging
+
+TODO: Add packaging info here
 
 ## Limitations    
 
