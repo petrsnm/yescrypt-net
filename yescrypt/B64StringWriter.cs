@@ -1,6 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+﻿using System.Runtime.CompilerServices;
 using System.Text;
 
 [assembly: InternalsVisibleTo("Tests")]

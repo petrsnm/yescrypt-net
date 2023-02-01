@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace Fasterlimit.Yescrypt
 {
-    
+
 
     public class Yescrypt
     {
@@ -42,6 +34,7 @@ namespace Fasterlimit.Yescrypt
 
         public static string NewPasswd(byte[] newPasswd, YescryptSettings settings)
         {
+            settings.salt = RandomNumberGenerator.GetBytes(16);
             return ChangePasswd(newPasswd, settings.ToString());
         }
 

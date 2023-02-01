@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Fasterlimit.Yescrypt
+﻿namespace Fasterlimit.Yescrypt
 {
     internal class Endian
     {
@@ -19,7 +12,7 @@ namespace Fasterlimit.Yescrypt
 
         public static uint le32dec(byte[] b, uint bIndex)           
         {
-            return ((uint)(b[bIndex]) + ((uint)(b[bIndex+1]) << 8) + ((uint)(b[bIndex+2]) << 16) + ((uint)(b[bIndex+3]) << 24));
+            return ((uint)(b[bIndex]) + ((uint)(b[bIndex+1]) << 8) + ((uint)(b[bIndex+2]) << 16) + ((uint)(b[bIndex+3]) << 24));            
         }
     }
 }

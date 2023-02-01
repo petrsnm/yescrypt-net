@@ -1,13 +1,5 @@
-﻿using Fasterlimit.Yescrypt;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.Intrinsics.Arm;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Fasterlimit.Yescrypt
 {
@@ -24,7 +16,7 @@ namespace Fasterlimit.Yescrypt
             this.r = r;             
         }
 
-        public YescryptKdf() : this(YescryptFlags.YESCRYPT_RW_DEFAULTS, 2048, 8)
+        public YescryptKdf() : this(YescryptFlags.YESCRYPT_RW_DEFAULTS, 4096, 8)
         {
         }
        
