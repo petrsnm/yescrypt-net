@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
 
 namespace Fasterlimit.Yescrypt
 {
@@ -34,15 +36,25 @@ namespace Fasterlimit.Yescrypt
 
         public static string NewPasswd(byte[] newPasswd, YescryptSettings settings)
         {
-            settings.salt = RandomNumberGenerator.GetBytes(16);
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var buf = new byte[16];
+                rng.GetBytes(buf);
+                settings.salt = buf;
+            }
             return ChangePasswd(newPasswd, settings.ToString());
         }
 
 
         public static string ChangePasswd(byte[] newPasswd, string encoded)
         {
-            YescryptSettings settings = new YescryptSettings(encoded);            
-            settings.salt = RandomNumberGenerator.GetBytes(16);
+            YescryptSettings settings = new YescryptSettings(encoded);
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var buf = new byte[16];
+                rng.GetBytes(buf);
+                settings.salt = buf;
+            }
             byte[] derivedKey = DeriveKey(newPasswd, settings);
             settings.key = derivedKey;
             return settings.ToString();

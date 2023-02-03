@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Fasterlimit.Yescrypt
@@ -24,7 +25,7 @@ namespace Fasterlimit.Yescrypt
         {
             uint[] V = new uint[32 * r * N];
             uint[] B = new uint[32 * r];
-            byte[] sha256 = new byte[32];
+            byte[] buf = new byte[32];
 
             if (Flags == 1)
             {
@@ -35,31 +36,31 @@ namespace Fasterlimit.Yescrypt
             byte[] passwdHash; 
             using (var hmacsha256 = new HMACSHA256(key))
             {
-                passwdHash = hmacsha256.ComputeHash(passwd);                
+                passwdHash = hmacsha256.ComputeHash(passwd);
             }
 
             using (var pbkdf2 = new Rfc2898DeriveBytes(passwdHash, salt, 1, HashAlgorithmName.SHA256))
             {
                 var bytes = pbkdf2.GetBytes(B.Length * 4);
                 Helper.WordsFromBytes( bytes,0, B, 0, B.Length);
-                Array.Copy(bytes, sha256, sha256.Length);
+                Array.Copy(bytes, buf, buf.Length);
             }
 
             if ((Flags & YescryptFlags.YESCRYPT_RW) !=0)
             {
-                Smix.Mix(B, 0, r, N, Flags, V, ref sha256);
+                Smix.Mix(B, 0, r, N, Flags, V, ref buf);
             }
             else
             {
                 /* 3: B_i <-- MF(B_i, N) */
-                Smix.Mix( B, 4 * r, r, N, Flags, V, ref sha256);                
+                Smix.Mix( B, 4 * r, r, N, Flags, V, ref buf);                
             }
 
             /* 5: DK <-- PBKDF2(P, B, 1, dkLen) */
             byte[] eSalt = new byte[B.Length * 4];
             Helper.WordsToBytes(B,0,eSalt, 0, B.Length);
             byte[] dk;
-            using (var pbkdf2 = new Rfc2898DeriveBytes(sha256, eSalt, 1, HashAlgorithmName.SHA256))
+            using (var pbkdf2 = new Rfc2898DeriveBytes(buf, eSalt, 1, HashAlgorithmName.SHA256))
             {
                 dk = pbkdf2.GetBytes(keyLength < 32 ? 32 : keyLength);
             }
@@ -79,19 +80,20 @@ namespace Fasterlimit.Yescrypt
                 Array.Copy(dk, dk32, dk32.Length);
                 using (var hmacsha256 = new HMACSHA256(dk32))
                 {
-                    sha256 = hmacsha256.ComputeHash(Encoding.ASCII.GetBytes("Client Key"));
-                    sha256 = SHA256.HashData(sha256);
-
-                    if (keyLength > sha256.Length)
+                    buf = hmacsha256.ComputeHash(Encoding.ASCII.GetBytes("Client Key"));
+                    using (var sha256 = SHA256.Create())
                     {
-                        Array.Copy(sha256, dk, sha256.Length);
+                        buf = sha256.ComputeHash(buf);
+                        if (keyLength > buf.Length)
+                        {
+                            Array.Copy(buf, dk, buf.Length);
+                        }
+                        else
+                        {
+                            dk = new byte[keyLength];
+                            Array.Copy(buf, dk, dk.Length);
+                        }
                     }
-                    else
-                    {
-                        dk = new byte[keyLength];
-                        Array.Copy(sha256, dk, dk.Length);
-                    }
-
                 }
             }
 

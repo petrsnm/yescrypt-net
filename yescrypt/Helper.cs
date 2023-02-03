@@ -1,4 +1,6 @@
-﻿namespace Fasterlimit.Yescrypt
+﻿using System;
+
+namespace Fasterlimit.Yescrypt
 {
     internal class Helper
     {

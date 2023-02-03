@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>netstandard2.0</TargetFramework>
+	  <TargetFramework>netstandard2.1</TargetFramework>
 	<RootNamespace>Fasterlimit.Yescrypt</RootNamespace>
-	<ImplicitUsings>enable</ImplicitUsings>
+	<ImplicitUsings>disable</ImplicitUsings>
 	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	  <Version>9999.9999.9999</Version>
 	  <AssemblyVersion>9999.9999.9999.9999</AssemblyVersion>
