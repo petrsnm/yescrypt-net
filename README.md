@@ -1,3 +1,7 @@
+[![Build status](https://img.shields.io/appveyor/build/petrsnm/yescrypt-net)](https://ci.appveyor.com/project/petrsnm/yescrypt-net)
+[![nuget](https://img.shields.io/nuget/v/yescrypt-net)](https://www.nuget.org/packages/yescrypt-net)
+[![License](https://img.shields.io/github/license/petrsnm/yescrypt-net)](https://github.com/petrnsm/yescrypt-net/blob/master/LICENSE)
+
 # yescrypt-net
 
 .NET implementation of the yescrypt a password-based key derivation function (KDF) and password hashing scheme.
@@ -8,22 +12,23 @@ TODO: Add packaging info here
 
 ## Usage
 
-This implementation is suitable for simple validation of passwords against the yescrypt hash that can be found in the /etc/shadow file on modern linux distos:
+This implementation is suitable for simple validation of passwords against the yescrypt hash that can be found in the /etc/shadow file on modern Linux distos:
 
-    $ sudo cat /etc/shadow
-    ...
-    testuser:$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9:19389:0:99999:7:::
-
+``` 
+$ sudo cat /etc/shadow
+...
+testuser:$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9:19389:0:99999:7:::
+```
 
 Using the yescrypt value from the line above, you can write code like this to validata testuser's password:
 
 ``` c#
-using fasterlimit.yescrypt
+using Fasterlimit.Yescrypt
 
 public static void main(string[] args)
 {
     byte[] passwd = Encoding.UTF8.GetBytes("passw0rd");
-        if (Yescrypt.CheckPasswd(passwd, "$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9"))
+    if (Yescrypt.CheckPasswd(passwd, "$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9"))
     {
         Console.WriteLine("Correct");
     }
