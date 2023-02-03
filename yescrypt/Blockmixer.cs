@@ -1,8 +1,10 @@
-﻿namespace Fasterlimit.Yescrypt
+﻿using System;
+
+namespace Fasterlimit.Yescrypt
 {
     internal interface Blockmixer
     {
-        public void Blockmix(uint[] B, uint r);
+        void Blockmix(uint[] B, uint r);
     }
 
     internal class Salsa8Blockmixer : Blockmixer

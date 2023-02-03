@@ -1,10 +1,54 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>Fasterlimit.Yescrypt</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Fasterlimit.Yescrypt</RootNamespace>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Version>9999.9999.9999</Version>
+        <AssemblyVersion>9999.9999.9999.9999</AssemblyVersion>
+        <FileVersion>9999.9999.9999.9999</FileVersion>
+        <Authors>matt@fasterlimit.com</Authors>
+        <Company>FasterLimit.org</Company>
+        <Copyright>(c) 2023 Matthew T. Peterson &lt;matt@fasterlimit.com&gt;</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <Description>
+.NET implementation of the yescrypt a password-based key derivation function (KDF) and password hashing scheme.
+- Yescrypt.CheckPasswd() validates plaintext passwords against yescrypt password hashes typical of the /etc/shadow file in modern Linux distros
+- Yescrypt.ChangePasswd() generates a new password hash in the same format with random salt, using yescrypt settings in the existing password hash
+- Yescrypt.NewPasswd() generates a new password hash with the settings specified by the caller
+        </Description>
+        <PackageProjectUrl>https://github.com/petrsnm/yescrypt-net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/petrsnm/yescrypt-net</RepositoryUrl>
+        <!--
+        <PackageIcon>Content\images\yescrypt.png</PackageIcon>
+        -->
+        <PackageTags>yescrypt;cryptography;csharp;netstandard;dotnet-standard</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReleaseNotes>
+- Initial version validated against latest Ubuntu / Debian release
+- Limitations:
+    1. Does not implement p>1 (i.e., no parallelism
+    2. No ROMs support, and therefore, is best suited to casual checking of passwords, not proof of work or password cracking
+    3. Only tested with YESCRYPT_RW flavor, if YESCRYPT_WORM flavor is encountered, an exception will be thrown
+        </PackageReleaseNotes>
+        <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <!--
+    <ItemGroup>
+        <None Include="..\yescrypt.png" Link="OTP.png" Pack="true" PackagePath="Content\images\" />
+    </ItemGroup>
+    -->
+
+    <ItemGroup>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>

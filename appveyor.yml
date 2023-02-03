@@ -1,0 +1,32 @@
+
+version: 1.0.0-dev-{build}
+branches:
+  only:
+  - main
+skip_commits:
+  files:
+    - README.md
+image: Visual Studio 2022
+configuration: Release
+before_build:
+- ps: '& .\appveyor-prebuild.ps1'
+build:
+  project: yescrypt.sln
+  publish_nuget: true
+  publish_nuget_symbols: true
+  use_snupkg_format: true
+  parallel: true
+  verbosity: normal
+deploy:
+- provider: NuGet
+  api_key:
+    secure: BlcuFG6KZZcpMhFtZXTmK+WyOobEeNIxCBNF7f2Mis2dsocorjE/L6x3wFLOxpz4
+notifications:
+- provider: Email
+  to:
+  - matt@fasterlimit.com
+  - petrsnd@gmail.com
+  subject: yescrypt-net build is failing
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: false
