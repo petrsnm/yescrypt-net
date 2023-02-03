@@ -1,6 +1,6 @@
 [![Build status](https://img.shields.io/appveyor/build/petrsnm/yescrypt-net)](https://ci.appveyor.com/project/petrsnm/yescrypt-net)
 [![nuget](https://img.shields.io/nuget/v/yescrypt-net)](https://www.nuget.org/packages/yescrypt-net)
-[![License](https://img.shields.io/github/license/petrsnm/yescrypt-net)](https://github.com/petrnsm/yescrypt-net/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/petrsnm/yescrypt-net)](https://github.com/petrnsm/yescrypt-net/blob/main/LICENSE)
 
 # yescrypt-net
 
