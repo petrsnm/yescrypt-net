@@ -1,34 +1,47 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <TargetFramework>netstandard2.1</TargetFramework>
-	<RootNamespace>Fasterlimit.Yescrypt</RootNamespace>
-	<ImplicitUsings>disable</ImplicitUsings>
-	  <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-	  <Version>9999.9999.9999</Version>
-	  <AssemblyVersion>9999.9999.9999.9999</AssemblyVersion>
-	  <FileVersion>9999.9999.9999.9999</FileVersion>
-	  <Authors>matt@fasterlimit.com</Authors>
-	  <Company>FasterLimit.org</Company>
-	  <Copyright>(c) 2023 Matthew T. Peterson &lt;matt@fasterlimit.com&gt;</Copyright>
-	  <PackageLicenseFile>LICENSE</PackageLicenseFile>
-	  <Description>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <RootNamespace>Fasterlimit.Yescrypt</RootNamespace>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <Version>9999.9999.9999</Version>
+        <AssemblyVersion>9999.9999.9999.9999</AssemblyVersion>
+        <FileVersion>9999.9999.9999.9999</FileVersion>
+        <Authors>matt@fasterlimit.com</Authors>
+        <Company>FasterLimit.org</Company>
+        <Copyright>(c) 2023 Matthew T. Peterson &lt;matt@fasterlimit.com&gt;</Copyright>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <Description>
 
-	  </Description>
-	  <PackageProjectUrl>https://github.com/petrsnm/yescrypt-net</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/petrsnm/yescrypt-net</RepositoryUrl>
-	  <!--
-	  <PackageIcon>Content\images\yescrypt.png</PackageIcon>
-	  -->
-	  <PackageTags>yescrypt;cryptography;csharp;netstandard;dotnet-standard</PackageTags>
-	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-	  <RepositoryType>git</RepositoryType>
-	  <IncludeSymbols>true</IncludeSymbols>
-	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-	  <PackageReleaseNotes>
+        </Description>
+        <PackageProjectUrl>https://github.com/petrsnm/yescrypt-net</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/petrsnm/yescrypt-net</RepositoryUrl>
+        <!--
+        <PackageIcon>Content\images\yescrypt.png</PackageIcon>
+        -->
+        <PackageTags>yescrypt;cryptography;csharp;netstandard;dotnet-standard</PackageTags>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RepositoryType>git</RepositoryType>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+        <PackageReleaseNotes>
 
-	  </PackageReleaseNotes>
-	  <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-  </PropertyGroup>
+        </PackageReleaseNotes>
+        <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <!--
+    <ItemGroup>
+        <None Include="..\yescrypt.png" Link="OTP.png" Pack="true" PackagePath="Content\images\" />
+    </ItemGroup>
+    -->
+
+    <ItemGroup>
+        <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
 
 </Project>
