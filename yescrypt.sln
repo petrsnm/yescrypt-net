@@ -5,7 +5,15 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "yescrypt", "yescrypt\yescrypt.csproj", "{E86FFA23-0327-4464-9CC1-FEC707A448F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{4F908D50-B4FF-4325-B0DD-8F9A7C8F8C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tests", "tests\tests.csproj", "{4F908D50-B4FF-4325-B0DD-8F9A7C8F8C47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B4191A5-4474-42E2-9B64-344E7E8B9653}"
+	ProjectSection(SolutionItems) = preProject
+		appveyor-prebuild.ps1 = appveyor-prebuild.ps1
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
