@@ -20,9 +20,7 @@
         </Description>
         <PackageProjectUrl>https://github.com/petrsnm/yescrypt-net</PackageProjectUrl>
         <RepositoryUrl>https://github.com/petrsnm/yescrypt-net</RepositoryUrl>
-        <!--
-        <PackageIcon>Content\images\yescrypt.png</PackageIcon>
-        -->
+        <PackageIcon>Content\images\logo-128.png</PackageIcon>
         <PackageTags>yescrypt;cryptography;csharp;netstandard;dotnet-standard</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <RepositoryType>git</RepositoryType>
@@ -38,11 +36,9 @@
         <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <!--
     <ItemGroup>
-        <None Include="..\yescrypt.png" Link="OTP.png" Pack="true" PackagePath="Content\images\" />
+        <None Include="..\logo-128.png" Link="logo-128.png" Pack="true" PackagePath="Content\images\" />
     </ItemGroup>
-    -->
 
     <ItemGroup>
         <None Include="..\LICENSE">
