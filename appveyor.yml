@@ -1,5 +1,5 @@
 
-version: 1.0.0-dev-{build}
+version: 1.0.{build}
 branches:
   only:
   - main
@@ -8,8 +8,16 @@ skip_commits:
     - README.md
 image: Visual Studio 2022
 configuration: Release
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
 before_build:
-- ps: '& .\appveyor-prebuild.ps1'
+- ps: nuget restore yescrypt.sln
 build:
   project: yescrypt.sln
   publish_nuget: true
