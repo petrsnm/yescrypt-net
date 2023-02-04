@@ -8,7 +8,7 @@
 
 ## Packaging
 
-TODO: Add packaging info here
+Nuget package available here: https://www.nuget.org/packages/yescrypt
 
 ## Usage
 
@@ -18,9 +18,10 @@ This implementation is suitable for simple validation of passwords against the y
 $ sudo cat /etc/shadow
 ...
 testuser:$y$j9T$IZUrEbc9oo9gZ28EqoVjI.$HVWJnkX89URubQkrksozeEoBwresP91xRowRD4ynRE9:19389:0:99999:7:::
+...
 ```
 
-Using the yescrypt value from the line above, you can write code like this to validata testuser's password:
+Using the yescrypt value from the line above, you can write code like this to validate `testuser`'s password:
 
 ``` c#
 using Fasterlimit.Yescrypt
@@ -49,10 +50,6 @@ The Yescrypt class has two other useful methods:
     * Output output: yescrypt string with new salt and password hash
 
 You can also use the raw `YescryptKdf` class if you want complete control of the KDF. 
-
-## Packaging
-
-TODO: Add packaging info here
 
 ## Limitations    
 
