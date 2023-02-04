@@ -27,6 +27,12 @@ namespace Fasterlimit.Yescrypt
             uint[] B = new uint[32 * r];
             byte[] buf = new byte[32];
 
+            // Haven't tested the codepaths for Scypt and WORM
+            if (Flags == 0)
+            {
+                throw new NotImplementedException("Scrypt not supported");
+            }
+
             if (Flags == 1)
             {
                 throw new NotImplementedException("YESCRYPT_WORM not supported");
