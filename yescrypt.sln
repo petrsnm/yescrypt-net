@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		appveyor-prebuild.ps1 = appveyor-prebuild.ps1
 		appveyor.yml = appveyor.yml
 		LICENSE = LICENSE
+		logo-128.png = logo-128.png
 		README.md = README.md
 	EndProjectSection
 EndProject
