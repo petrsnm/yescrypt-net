@@ -22,7 +22,6 @@ namespace Fasterlimit.Yescrypt
             p = 1;
             t = 0;
             g = 0;
-            salt = new byte[16];
             key = new byte[32];
         }
 
@@ -100,7 +99,8 @@ namespace Fasterlimit.Yescrypt
 
             // Decode Salt
             reader = new B64StringReader(parts[3]);
-            salt = reader.ReadBytes(16);
+            var saltLen = (int)Math.Ceiling(parts[3].Length / 1.375);
+            salt = reader.ReadBytes(saltLen);
 
             // Decode Key
             reader = new B64StringReader(parts[4]);
