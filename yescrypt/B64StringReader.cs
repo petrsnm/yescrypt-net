@@ -112,8 +112,11 @@ namespace Fasterlimit.Yescrypt
                     val >>= 8;
                 }
             }
+
+            bool hasPadding = false;
             if (bits > 0 )
             {
+                hasPadding = true;
                 uint val = ReadUint32Bits(bits);
                 for (int i = 0; i < bits / 6; i++)
                 {
@@ -124,7 +127,7 @@ namespace Fasterlimit.Yescrypt
             
             if(rvalIndex < rval.Length)
             {
-                Array.Resize(ref rval, rvalIndex - 1);
+                Array.Resize(ref rval, rvalIndex - (hasPadding ? 1 : 0));
             }
 
             return rval;
