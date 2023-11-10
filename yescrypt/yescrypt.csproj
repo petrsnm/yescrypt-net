@@ -12,6 +12,7 @@
         <Company>FasterLimit.org</Company>
         <Copyright>(c) 2023 Matthew T. Peterson &lt;matt@fasterlimit.com&gt;</Copyright>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <Description>
 .NET implementation of the yescrypt a password-based key derivation function (KDF) and password hashing scheme.
 - Yescrypt.CheckPasswd() validates plaintext passwords against yescrypt password hashes typical of the /etc/shadow file in modern Linux distros
@@ -42,6 +43,10 @@
 
     <ItemGroup>
         <None Include="..\LICENSE">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+        <None Include="..\README.md">
             <Pack>True</Pack>
             <PackagePath></PackagePath>
         </None>
