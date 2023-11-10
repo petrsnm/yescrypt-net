@@ -22,6 +22,7 @@ namespace Fasterlimit.Yescrypt
             p = 1;
             t = 0;
             g = 0;
+            salt = new byte[16];
             key = new byte[32];
         }
 
