@@ -12,6 +12,11 @@ namespace tests
             Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foo"), "$y$j9T$IYOtk1P7X7XerR2MxSBt41$ylOTRMdaL7amUytGWDGmMeCvzk3yPxMwliVqAMmeuUB"));
             Assert.IsFalse(Yescrypt.CheckPasswd(Encoding.ASCII.GetBytes("foobar"), "$y$j9T$IYOtk1P7X7XerR2MxSBt41$ylOTRMdaL7amUytGWDGmMeCvzk3yPxMwliVqAMmeuUB"));
             Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("klâwen"), "$y$j9T$gdl4VsceJ0dcK65iQQZzc0$7b08F6h5QwLdzQVhJlbT1LakWThuW7MLEGrRV5S.X0C"));
+            
+            // Test different salt lengths (23-25 characters before encoding)
+            Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("foobar"), "$y$j9T$iemju3R6WTIkO45Q5cNJB1$OMiCs4T6oPqi8sUjuhtLnlMXPbbfDwUEpK8KlifZQO9"));
+            Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("test123"), "$y$j9T$Uld6DeBZ9Yn3FhvyAdwEGiam$/SgUfzYuKXiMVUDyvVJS7kRiwfCHcF6juRglqHR00Y7"));
+            Assert.IsTrue(Yescrypt.CheckPasswd(Encoding.UTF8.GetBytes("foobar"), "$y$j9T$pWg/Dy73M0YFPg7hllxIE.$Z.heZ9FROBoqVhzRYBkbQ/hhDwEvIK4hByhpHwpjeM5"));
         }
 
         [TestMethod()]

@@ -100,7 +100,7 @@ namespace Fasterlimit.Yescrypt
 
             // Decode Salt
             reader = new B64StringReader(parts[3]);
-            salt = reader.ReadBytes(16);
+            salt = reader.ReadBytes(64); // read up to maximum of 512 bits of salt
 
             // Decode Key
             reader = new B64StringReader(parts[4]);
