@@ -30,9 +30,10 @@
         <PackageReleaseNotes>
 - Initial version validated against latest Ubuntu / Debian release
 - Limitations:
-    1. Does not implement p>1 (i.e., no parallelism
+    1. Does not implement p>1 (i.e., no parallelism)
     2. No ROMs support, and therefore, is best suited to casual checking of passwords, not proof of work or password cracking
     3. Only tested with YESCRYPT_RW flavor, if YESCRYPT_WORM flavor is encountered, an exception will be thrown
+- Added support for arbitrary salt length
         </PackageReleaseNotes>
         <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     </PropertyGroup>
