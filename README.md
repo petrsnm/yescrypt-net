@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/x0exhs1o9ejng5yi?svg=true)](https://ci.appveyor.com/project/petrsnm/yescrypt-net)
+[![Build status](https://ci.appveyor.com/api/projects/status/jbib6pg305dj3jw9?svg=true)](https://ci.appveyor.com/project/petrsnm/yescrypt-net)
 [![nuget](https://img.shields.io/nuget/v/yescrypt)](https://www.nuget.org/packages/yescrypt)
 
 # yescrypt-net
